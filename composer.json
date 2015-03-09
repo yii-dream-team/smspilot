@@ -1,0 +1,34 @@
+{
+  "name": "yii-dream-team/smspilot",
+  "description": "PHP class for working with smspilot.ru api by Yii Dream Team",
+  "type": "library",
+  "keywords": [
+    "sms",
+    "smspilot.ru",
+    "api",
+    "russian"
+  ],
+  "homepage": "http://yiidreamteam.com/php/smspilot",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexey Samoylov",
+      "email": "alexey.samoylov@gmail.com",
+      "homepage": "http://yiidreamteam.com/team/alexey",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/yii-dream-team/smspilot/issues",
+    "source": "https://github.com/yii-dream-team/smspilot"
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "guzzlehttp/guzzle": "4.2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "yiidreamteam\\smspilot\\": "./src"
+    }
+  }
+}
