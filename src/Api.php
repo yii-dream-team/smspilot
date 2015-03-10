@@ -69,7 +69,7 @@ class Api
         if ($response->getStatusCode() != 200)
             throw new \Exception('Api http error: ' . $response->getStatusCode(), $response->getStatusCode());
 
-        $result = json_decode($response->getBody());
+        $result = json_decode($response->getBody(), true);
         if (isset($result['error']))
             throw new \BadMethodCallException('Api error: ' . $result['error']['description'], $result['error']['code']);
 
