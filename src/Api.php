@@ -19,8 +19,13 @@ class Api
 
     /** @var Client */
     protected $client = null;
+
     protected $defaultParams = [];
 
+    /**
+     * Api constructor.
+     * @param $apiKey
+     */
     public function __construct($apiKey)
     {
         $this->defaultParams = [
@@ -28,6 +33,16 @@ class Api
         ];
     }
 
+    /**
+     * Send sms
+     *
+     * @param $to
+     * @param $text
+     * @param null $sender
+     * @param int $messageId
+     * @return string
+     * @throws \Exception
+     */
     public function send($to, $text, $sender = null, $messageId = 0)
     {
         $params = [
@@ -36,8 +51,9 @@ class Api
             'text' => $text,
         ];
 
-        if (!empty($sender))
+        if (!empty($sender)) {
             $params['from'] = $sender;
+        }
 
         return $this->call('send', $params);
     }
@@ -52,26 +68,31 @@ class Api
      */
     public function call($method, $params = [])
     {
-        if (empty($this->client))
+        if (null === $this->client) {
             $this->client = new Client([
-                'base_url' => static::API_URL,
+                'base_uri' => static::API_URL,
                 'content-type' => 'application/json',
             ]);
+        }
 
         $requestParams = array_merge($this->defaultParams, [
             $method => [$params],
         ]);
 
-        if ($this->sandbox)
+        if ($this->sandbox) {
             $requestParams['apikey'] = self::SANDBOX_KEY;
+        }
 
         $response = $this->client->post(null, ['body' => json_encode($requestParams)]);
-        if ($response->getStatusCode() != 200)
+        if ($response->getStatusCode() != 200) {
             throw new \Exception('Api http error: ' . $response->getStatusCode(), $response->getStatusCode());
+        }
 
         $result = json_decode($response->getBody(), true);
-        if (isset($result['error']))
-            throw new \BadMethodCallException('Api error: ' . $result['error']['description'], $result['error']['code']);
+        if (isset($result['error'])) {
+            throw new \BadMethodCallException('Api error: ' . $result['error']['description'],
+                $result['error']['code']);
+        }
 
         return $result;
     }
